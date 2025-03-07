@@ -8,7 +8,9 @@ import 'editor_state.dart';
 
 const Map<String, String> lessonGuideCatalog = {
   '0':
-      r'''[{"insert":"Title","attributes":{"code":true}},{"insert":"\nBody...\n"}]''',
+      r'''[{"insert":"Title","attributes":{"code":true}},{"insert":"\ntesting image book...\ntesting gif..."},{"insert":{"image":"https://biblingoprod.s3.amazonaws.com/assets/app/badges/Items/Sandals/_After.png"},"attributes":{"style":"width: 157.1657142857143; height: 206.39542857142857; "}},{"insert":"\n"},{"insert":"\n\nend.\n"}]''',
+  '1':
+      r'''[{"insert":"Title","attributes":{"code":true}},{"insert":"\ntesting image book...\ntesting gif..."},{"insert":{"image":"https://biblingoprod.s3.amazonaws.com/assets/app/badges/Items/Sandals/_After.png"},"attributes":{"style":"width: 157.1657142857143; height: 206.39542857142857; "}},{"insert":"\n"},{"insert":{"image":"http://biblingoprod.s3.amazonaws.com/assets/app/badges/Items/Sandals/BadgeSandals.gif"},"attributes":{"style":"width: 157.1657142857143; height: 206.39542857142857; "}},{"insert":"\n\nend.\n"}]''',
   'Greek.1':
       r'''[{"insert":"Title 1","attributes":{"code":true}},{"insert":"\nBody 1\n\n"},{"insert":"Ἄνθρωπ-","attributes":{"font":"GentiumPlus"}},{"insert":"ος","attributes":{"font":"GentiumPlus","color":"#FFB71C1C"}},{"insert":" κράζει","attributes":{"font":"GentiumPlus"}},{"insert":"\n"},{"insert":"vs.","attributes":{"size":"small"}},{"insert":"\n"},{"insert":"ἀδελφὴ τύπτει ἄνθρωπ-ον","attributes":{"font":"GentiumPlus"}},{"insert":"\n\n"},{"insert":"Title 2","attributes":{"code":true}},{"insert":"\nBody 2.1\n\n"},{"insert":"Body 2.2","attributes":{"bold":true}},{"insert":"\n\n"},{"insert":"Body 2.3","attributes":{"color":"#FFF44336"}},{"insert":"\n"}]''',
   'Greek.2':
@@ -18,7 +20,7 @@ const Map<String, String> lessonGuideCatalog = {
 };
 
 class EditorCubit extends Cubit<EditorState> {
-  EditorCubit() : super(EditorState()) {
+  EditorCubit() : super(const EditorState()) {
     start();
   }
 

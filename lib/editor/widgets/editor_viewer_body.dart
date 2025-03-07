@@ -1,58 +1,81 @@
-// import 'dart:convert';
+import 'dart:convert';
 
-// import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 
-// import '../cubit/editor_cubit.dart';
+import 'package:itio_editor/editor/widgets/editor_writer_body.dart';
 
-// class EditorViewerBody extends StatefulWidget {
-//   const EditorViewerBody({super.key});
+import '../cubit/editor_cubit.dart';
 
-//   @override
-//   State<EditorViewerBody> createState() => _EditorViewerBodyState();
-// }
+class EditorViewerBody extends StatefulWidget {
+  const EditorViewerBody({super.key});
 
-// class _EditorViewerBodyState extends State<EditorViewerBody> {
-//   final QuillController _controller = QuillController.basic();
-//   final FocusNode _editorFocusNode = FocusNode();
-//   final ScrollController _editorScrollController = ScrollController();
+  @override
+  State<EditorViewerBody> createState() => _EditorViewerBodyState();
+}
 
-//   @override
-//   void dispose() {
-//     _controller.dispose();
-//     _editorScrollController.dispose();
-//     _editorFocusNode.dispose();
-//     super.dispose();
-//   }
+class _EditorViewerBodyState extends State<EditorViewerBody> {
+  final QuillController _controller = QuillController.basic();
+  final FocusNode _editorFocusNode = FocusNode();
+  final ScrollController _editorScrollController = ScrollController();
 
-//   @override
-//   Widget build(BuildContext context) {
-//     try {
-//       final String guideContent = context.read<EditorCubit>().state.text ?? '';
-//       final json = jsonDecode(guideContent);
+  @override
+  void dispose() {
+    _controller.dispose();
+    _editorScrollController.dispose();
+    _editorFocusNode.dispose();
+    super.dispose();
+  }
 
-//       _controller.document = Document.fromJson(json);
-//     } catch (_) {}
+  @override
+  Widget build(BuildContext context) {
+    try {
+      final String guideContent = context.read<EditorCubit>().state.text ?? '';
+      final json = jsonDecode(guideContent);
 
-//     return Padding(
-//       padding: const EdgeInsets.all(8.0),
-//       child: QuillEditor(
-//         focusNode: _editorFocusNode,
-//         scrollController: _editorScrollController,
-//         controller: _controller,
-//         // configurations: const QuillEditorConfigurations(
-//         //   placeholder: 'no notes...',
-//         // ),
-//       ),
-//     );
-//     // return SingleChildScrollView(
-//     //   child: Column(
-//     //     children: [
-//     //       ...listExpansionTile,
-//     //     ],
-//     //   ),
-//     // );
-//   }
-// }
+      _controller.document = Document.fromJson(json);
+    } catch (_) {}
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: QuillEditor(
+        controller: _controller,
+        focusNode: _editorFocusNode,
+        scrollController: _editorScrollController,
+        config: QuillEditorConfig(
+          autoFocus: true,
+          checkBoxReadOnly: true,
+          detectWordBoundary: false,
+          disableClipboard: true,
+          enableScribble: false,
+          floatingCursorDisabled: true,
+          enableSelectionToolbar: false,
+          placeholder: 'Start writing your notes...',
+          padding: const EdgeInsets.all(16),
+          embedBuilders: [
+            ...FlutterQuillEmbeds.editorBuilders(
+              imageEmbedConfig: QuillEditorImageEmbedConfig(
+                imageProviderBuilder: (context, imageUrl) {
+                  // https://pub.dev/packages/flutter_quill_extensions#-image-assets
+                  if (imageUrl.startsWith('assets/')) {
+                    return AssetImage(imageUrl);
+                  }
+                  return null;
+                },
+              ),
+              videoEmbedConfig: QuillEditorVideoEmbedConfig(
+                customVideoBuilder: (videoUrl, readOnly) {
+                  // To load YouTube videos https://github.com/singerdmx/flutter-quill/releases/tag/v10.8.0
+                  return null;
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
